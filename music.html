@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container-fluid" id="main">
+        <div class="row" id="r1"></div>
+
+        <div class="row" id="r2" style="width: 205px;">
+
+
+            <div class="col-sm-10  offset-2" style="background-image: linear-gradient(to bottom left,rgb(161, 35, 161),rgb(219, 114, 131));">
+                <div class="row" id="new">
+
+                    <audio src="" id="audio"></audio>
+
+                </div>
+                <div class="row" id="new1">
+                    <!-- <p id="p1"></p> -->
+                    <div class="col-sm-12">
+                        <center>
+                            <p id="p1"></p>
+                        </center>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <center>
+                            <i class="fa fa-fast-backward" onclick="prevf()" aria-hidden="true" id="next"></i>
+                            <i class="fa fa-play" onclick="myf()" aria-hidden="true" id="pl"></i>
+                            <i class="fa fa-fast-forward" onclick="nextf()" aria-hidden="true" id="prev"></i>
+                        </center>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="row">
+
+            <div class="col-sm-12 ">
+                <center> <a href="home.html "><i class="fa fa-home fa-1x" aria-hidden="true"></i></a>
+
+                    <a href="message.html" id="aa"><i class="fa fa-envelope fa-1x " aria-hidden="true"></i></a>
+                    <a href="music.html" id="aa"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a>
+                    <a href="stopwatch.html" id="aa"><i class="fa fa-clock-o fa-1x" aria-hidden="true"></i></a>
+                </center>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        #main {
+            background-image: url("smart-watch.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            /* position: relative; */
+            height: 600px;
+            width: 250px;
+            /* overflow: auto; */
+        }
+        
+        i {
+            padding: 10px;
+        }
+        
+        #r1 {
+            height: 220px;
+        }
+        
+        #r2 {
+            height: 155px;
+        }
+        
+        a {
+            color: black;
+        }
+        
+        #new {
+            height: 50px;
+        }
+        
+        #new1 {
+            height: 60px;
+        }
+    </style>
+    <script>
+        var music = "";
+        var song = "";
+        i = 0;
+        var ply = document.getElementById("pl");
+        var aud = document.getElementById("audio");
+        var text;
+        var len = 0;
+
+        function myf() {
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var sng = JSON.parse(this.responseText);
+                    // console.log(sng);
+                    var s = sng.mysong;
+                    console.log(s.length);
+                    len = s.length;
+                    music = s[i].song;
+                    // console.log(music)
+                    song = s[i].title;
+                    text = song;
+                    // console.log(text);
+                    document.getElementById("p1").innerHTML = text;
+
+                    // console.log(music);
+                    // console.log(song);
+                    aud.src = music;
+                    if (ply.className == "fa fa-play") {
+                        ply.className = "fa fa-pause";
+                        // console.log( ply.className);
+                        aud.play();
+
+                    } else {
+                        ply.className = "fa fa-play";
+
+                        aud.pause();
+
+                    }
+
+
+
+                }
+
+            }
+
+            xhttp.open("GET", "music.json", true);
+            xhttp.send();
+        }
+
+        function nextf() {
+            ply.className = "fa fa-play";
+            if (i == len - 1) {
+                i = 0;
+            } else {
+                i++;
+            }
+            myf();
+
+
+
+        }
+
+        function prevf() {
+            ply.className = "fa fa-play";
+            myf();
+            i--;
+
+        }
+    </script>
+</body>
+
+</html>
